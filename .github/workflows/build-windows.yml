@@ -1,0 +1,78 @@
+name: Build Windows executable
+
+# Triggers:
+#   - Every push to master → uploads .exe as a workflow artifact (10-day retention)
+#   - Push a tag like v1.0.0 → also creates a GitHub Release with the .exe attached
+#   - Manual trigger from the Actions tab → same as a push
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write   # needed to create Releases on tag pushes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build .exe with PyInstaller
+        # ProCleaner.spec is the pre-configured PyInstaller spec from the repo.
+        # It bundles main.py + ui/ + core/ into a single windowed .exe with no
+        # console popup on launch.
+        run: pyinstaller ProCleaner.spec
+
+      - name: Rename output to TurboDesk-Setup.exe
+        # The .spec produces something like dist\\ProCleaner\\ProCleaner.exe or
+        # dist\\ProCleaner.exe depending on onedir/onefile mode. Normalize the
+        # name so the artifact download and the Release asset are always
+        # called TurboDesk-Setup.exe.
+        shell: pwsh
+        run: |
+          $candidates = @(
+            'dist\\ProCleaner.exe',
+            'dist\\ProCleaner\\ProCleaner.exe',
+            'dist\\run.exe',
+            'dist\\run\\run.exe'
+          )
+          $source = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $source) {
+            Write-Error "Could not find built .exe. Contents of dist:"
+            Get-ChildItem -Recurse dist | Format-Table FullName
+            exit 1
+          }
+          New-Item -ItemType Directory -Force -Path dist\\release | Out-Null
+          Copy-Item $source -Destination dist\\release\\TurboDesk-Setup.exe
+          Write-Host "Built: $source -> dist\\release\\TurboDesk-Setup.exe"
+          Get-Item dist\\release\\TurboDesk-Setup.exe | Format-List Name, Length, LastWriteTime
+
+      - name: Upload as workflow artifact (downloadable from Actions tab)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TurboDesk-Setup
+          path: dist\\release\\TurboDesk-Setup.exe
+          if-no-files-found: error
+          retention-days: 10
+
+      - name: Publish as GitHub Release (only on tag pushes)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist\\release\\TurboDesk-Setup.exe
+          generate_release_notes: true
