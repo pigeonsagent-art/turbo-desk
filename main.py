@@ -57,16 +57,55 @@ def main():
     app.setOrganizationName("ProCleaner")
     app.setFont(QFont("Segoe UI", 10))
 
+    # ── License gate ─────────────────────────────────────────────────────
+    # Enforces trial + paid license before launching the main window.
+    # See licensing.py for the state machine.
+    try:
+        import licensing
+        from ui.activation_dialog import ActivationDialog
+
+        status = licensing.check_status()
+
+        # If not allowed to run, show activation dialog and re-check
+        if not status.allowed:
+            dialog = ActivationDialog(reason=status.message)
+            if dialog.exec() != dialog.DialogCode.Accepted:
+                # User cancelled — exit without launching the app
+                sys.exit(0)
+            # Re-evaluate after activation
+            status = licensing.check_status()
+            if not status.allowed:
+                QMessageBox.critical(
+                    None, "Turbo Desk",
+                    "Activation appeared to succeed but the license is not active. "
+                    "Please restart the app or contact support."
+                )
+                sys.exit(1)
+    except Exception:
+        import traceback
+        QMessageBox.critical(
+            None, "Turbo Desk — License Error",
+            f"Failed to check license:\n\n{traceback.format_exc()}"
+        )
+        sys.exit(1)
+
+    # ── Launch main app ──────────────────────────────────────────────────
     try:
         from ui.main_window import MainWindow
         window = MainWindow()
+        # Surface trial / offline status in the window title so users always
+        # know their state at a glance without opening a menu.
+        if status.mode == "trial":
+            window.setWindowTitle(f"Turbo Desk (Trial — {status.days_left} day{'s' if status.days_left != 1 else ''} left)")
+        elif status.mode == "licensed":
+            window.setWindowTitle("Turbo Desk")
         window.show()
         sys.exit(app.exec())
-    except Exception as e:
+    except Exception:
         import traceback
         QMessageBox.critical(
-            None, "ProCleaner — Startup Error",
-            f"ProCleaner failed to start:\n\n{traceback.format_exc()}"
+            None, "Turbo Desk — Startup Error",
+            f"Turbo Desk failed to start:\n\n{traceback.format_exc()}"
         )
         sys.exit(1)
 
