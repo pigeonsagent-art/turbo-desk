@@ -1,8 +1,8 @@
 name: Build Windows executable
 
 # Triggers:
-#   - Every push to master → uploads .exe as a workflow artifact (10-day retention)
-#   - Push a tag like v1.0.0 → also creates a GitHub Release with the .exe attached
+#   - Every push to master → uploads .zip as a workflow artifact (10-day retention)
+#   - Push a tag like v1.0.0 → also creates a GitHub Release with the .zip attached
 #   - Manual trigger from the Actions tab → same as a push
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: write   # needed to create Releases on tag pushes
+      contents: write
 
     steps:
       - name: Checkout code
@@ -32,41 +32,37 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: Build .exe with PyInstaller
-        # ProCleaner.spec is the pre-configured PyInstaller spec from the repo.
-        # It bundles main.py + ui/ + core/ into a single windowed .exe with no
-        # console popup on launch.
+      - name: Build with PyInstaller
         run: pyinstaller ProCleaner.spec
 
-      - name: Rename output to TurboDesk-Setup.exe
-        # The .spec produces something like dist\\ProCleaner\\ProCleaner.exe or
-        # dist\\ProCleaner.exe depending on onedir/onefile mode. Normalize the
-        # name so the artifact download and the Release asset are always
-        # called TurboDesk-Setup.exe.
+      - name: Show what was built
         shell: pwsh
         run: |
-          $candidates = @(
-            'dist\\ProCleaner.exe',
-            'dist\\ProCleaner\\ProCleaner.exe',
-            'dist\\run.exe',
-            'dist\\run\\run.exe'
-          )
-          $source = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-          if (-not $source) {
-            Write-Error "Could not find built .exe. Contents of dist:"
-            Get-ChildItem -Recurse dist | Format-Table FullName
+          Write-Host "=== dist contents ==="
+          Get-ChildItem -Recurse dist | Select-Object FullName, Length | Format-Table -AutoSize
+
+      - name: Package into TurboDesk.zip
+        # PyInstaller produces dist/ProCleaner/ containing run.exe + all its DLLs.
+        # Zip the whole folder — the exe won't launch without its sibling DLLs.
+        # A real installer (Inno Setup) is a follow-up; this gets us a downloadable today.
+        shell: pwsh
+        run: |
+          $buildDir = 'dist\ProCleaner'
+          if (-not (Test-Path $buildDir)) {
+            Write-Error "Expected build folder $buildDir does not exist"
             exit 1
           }
-          New-Item -ItemType Directory -Force -Path dist\\release | Out-Null
-          Copy-Item $source -Destination dist\\release\\TurboDesk-Setup.exe
-          Write-Host "Built: $source -> dist\\release\\TurboDesk-Setup.exe"
-          Get-Item dist\\release\\TurboDesk-Setup.exe | Format-List Name, Length, LastWriteTime
+          New-Item -ItemType Directory -Force -Path dist\release | Out-Null
+          $zipPath = 'dist\release\TurboDesk.zip'
+          Compress-Archive -Path "$buildDir\*" -DestinationPath $zipPath -Force
+          $size = (Get-Item $zipPath).Length
+          Write-Host "Created $zipPath ($([math]::Round($size/1MB, 2)) MB)"
 
-      - name: Upload as workflow artifact (downloadable from Actions tab)
+      - name: Upload as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TurboDesk-Setup
-          path: dist\\release\\TurboDesk-Setup.exe
+          name: TurboDesk-Windows
+          path: dist\release\TurboDesk.zip
           if-no-files-found: error
           retention-days: 10
 
@@ -74,5 +70,5 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist\\release\\TurboDesk-Setup.exe
+          files: dist\release\TurboDesk.zip
           generate_release_notes: true
