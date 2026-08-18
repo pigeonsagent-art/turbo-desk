@@ -1,15 +1,13 @@
-# ProCleaner
+# PCPolish
 
-**Free & open-source Windows system optimizer.**
+**Fast, ad-free Windows system optimizer.**
 
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078d4?logo=windows)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Release](https://img.shields.io/github/v/release/tonycarroll043-wq/ProCleaner)
-![Downloads](https://img.shields.io/github/downloads/tonycarroll043-wq/ProCleaner/total)
+![License](https://img.shields.io/badge/license-Commercial-blue)
 
 > One app to clean junk, fix the registry, manage startup, analyze disk space, and boost PC performance — no subscriptions, no ads, no tracking.
 
-**[Download](https://github.com/tonycarroll043-wq/ProCleaner/releases/latest) · [Website](https://tonycarroll043-wq.github.io/ProCleaner/)**
+**[Get PCPolish — £19.99 lifetime](https://pcpolish.com)**
 
 ---
 
@@ -31,9 +29,18 @@
 | **Cookie Manager** | Granular browser cookie control |
 | **Scheduler** | Automate cleaning on a schedule |
 
+## Licensing
+
+PCPolish is commercial software.
+
+- **7-day free trial** — full features, no card required
+- **£19.99 one-time** — lifetime licence, all future updates included
+- Activate on up to **3 devices** per licence
+- No subscription, no ads, no telemetry
+
 ## Quick Start
 
-1. Download [`ProCleaner-v1.0.0-Windows.zip`](https://github.com/tonycarroll043-wq/ProCleaner/releases/latest/download/ProCleaner-v1.0.0-Windows.zip)
+1. Download the latest release
 2. Extract anywhere
 3. Run `run.exe`
 
@@ -50,11 +57,15 @@ python main.py
 
 ```bash
 pip install pyinstaller
-pyinstaller ProCleaner.spec --clean --noconfirm
+pyinstaller PCPolish.spec --clean --noconfirm
 ```
 
-Output: `dist/ProCleaner/run.exe`
+Output: `dist/PCPolish/run.exe`
 
 ## License
 
-MIT — free to use, modify, and distribute.
+Copyright © 2026. All rights reserved.
+
+This software is commercial and proprietary. Source is published for
+transparency — you can read and audit exactly what runs on your machine.
+It is not licensed for redistribution or commercial reuse.
