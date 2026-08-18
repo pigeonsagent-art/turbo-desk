@@ -17,7 +17,7 @@ except ImportError:
     PSUTIL_OK = False
 
 
-HEALTH_STATE_FILE = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "health_state.json"
+HEALTH_STATE_FILE = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "health_state.json"
 
 
 class HealthMetric:
