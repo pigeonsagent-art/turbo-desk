@@ -12,7 +12,7 @@ from typing import List, Dict, Tuple, Optional
 from datetime import datetime, timezone
 
 
-WHITELIST_FILE = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "cookie_whitelist.json"
+WHITELIST_FILE = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "cookie_whitelist.json"
 
 
 class Cookie:
@@ -83,7 +83,7 @@ class CookieManager:
             db_path = os.path.join(base, profile, cfg["db_name"])
             if not os.path.isfile(db_path):
                 continue
-            tmp = db_path + ".procleaner_tmp"
+            tmp = db_path + ".PCPolish_tmp"
             try:
                 shutil.copy2(db_path, tmp)
                 conn = sqlite3.connect(tmp)
