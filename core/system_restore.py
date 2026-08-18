@@ -80,7 +80,7 @@ class SystemRestoreManager:
     # ------------------------------------------------------------------ #
     # Create
     # ------------------------------------------------------------------ #
-    def create(self, description: str = "ProCleaner Manual Restore Point") -> bool:
+    def create(self, description: str = "PCPolish Manual Restore Point") -> bool:
         if sys.platform != "win32":
             return False
         script = f'Checkpoint-Computer -Description "{description}" -RestorePointType "MODIFY_SETTINGS"'
