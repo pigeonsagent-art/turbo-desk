@@ -121,7 +121,7 @@ class SecureWiper:
     ) -> bool:
         """Fill free space with zeros then delete the filler file."""
         import shutil
-        filler = os.path.join(drive, "__procleaner_wipe_temp__.dat")
+        filler = os.path.join(drive, "__pcpolish_wipe_temp__.dat")
         chunk = 1024 * 1024  # 1 MB chunks
         try:
             written = 0
