@@ -16,7 +16,7 @@ env/
 
 # Logs
 *.log
-procleaner.log
+pcpolish.log
 
 # OS
 .DS_Store
