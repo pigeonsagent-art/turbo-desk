@@ -153,7 +153,7 @@ class BrowserCleaner:
 
     def clean_on_browser_close(self, browser: str, clean_types: List[str]) -> bool:
         """Register auto-clean hook for when browser closes. Uses a scheduler flag file."""
-        flag_dir = Path(os.environ.get("APPDATA", "")) / "ProCleaner"
+        flag_dir = Path(os.environ.get("APPDATA", "")) / "PCPolish"
         flag_dir.mkdir(parents=True, exist_ok=True)
         flag_file = flag_dir / f"auto_clean_{browser.replace(' ', '_')}.json"
         config = {"browser": browser, "types": clean_types, "enabled": True}
@@ -165,7 +165,7 @@ class BrowserCleaner:
     # Cookie Whitelist
     # ------------------------------------------------------------------ #
     def _load_whitelist(self) -> List[str]:
-        wl_path = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "cookie_whitelist.json"
+        wl_path = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "cookie_whitelist.json"
         if wl_path.exists():
             try:
                 with open(wl_path) as f:
@@ -175,7 +175,7 @@ class BrowserCleaner:
         return []
 
     def save_whitelist(self, whitelist: List[str]):
-        wl_dir = Path(os.environ.get("APPDATA", "")) / "ProCleaner"
+        wl_dir = Path(os.environ.get("APPDATA", "")) / "PCPolish"
         wl_dir.mkdir(parents=True, exist_ok=True)
         with open(wl_dir / "cookie_whitelist.json", "w") as f:
             json.dump(whitelist, f)
