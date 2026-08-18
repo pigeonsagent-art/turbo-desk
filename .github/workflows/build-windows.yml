@@ -33,7 +33,7 @@ jobs:
           pip install pyinstaller
 
       - name: Build with PyInstaller
-        run: pyinstaller ProCleaner.spec
+        run: pyinstaller PCPolish.spec
 
       - name: Show what was built
         shell: pwsh
@@ -41,19 +41,19 @@ jobs:
           Write-Host "=== dist contents ==="
           Get-ChildItem -Recurse dist | Select-Object FullName, Length | Format-Table -AutoSize
 
-      - name: Package into TurboDesk.zip
-        # PyInstaller produces dist/ProCleaner/ containing run.exe + all its DLLs.
+      - name: Package into PCPolish.zip
+        # PyInstaller produces dist/PCPolish/ containing run.exe + all its DLLs.
         # Zip the whole folder — the exe won't launch without its sibling DLLs.
         # A real installer (Inno Setup) is a follow-up; this gets us a downloadable today.
         shell: pwsh
         run: |
-          $buildDir = 'dist\ProCleaner'
+          $buildDir = 'dist\PCPolish'
           if (-not (Test-Path $buildDir)) {
             Write-Error "Expected build folder $buildDir does not exist"
             exit 1
           }
           New-Item -ItemType Directory -Force -Path dist\release | Out-Null
-          $zipPath = 'dist\release\TurboDesk.zip'
+          $zipPath = 'dist\release\PCPolish.zip'
           Compress-Archive -Path "$buildDir\*" -DestinationPath $zipPath -Force
           $size = (Get-Item $zipPath).Length
           Write-Host "Created $zipPath ($([math]::Round($size/1MB, 2)) MB)"
@@ -61,8 +61,8 @@ jobs:
       - name: Upload as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TurboDesk-Windows
-          path: dist\release\TurboDesk.zip
+          name: PCPolish-Windows
+          path: dist\release\PCPolish.zip
           if-no-files-found: error
           retention-days: 10
 
@@ -70,5 +70,5 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist\release\TurboDesk.zip
+          files: dist\release\PCPolish.zip
           generate_release_notes: true
