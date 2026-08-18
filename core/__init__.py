@@ -1,1 +1,1 @@
-# ProCleaner Core Package
+# PCPolish Core Package
