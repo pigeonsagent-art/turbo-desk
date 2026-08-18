@@ -18,7 +18,7 @@ except ImportError:
     SCHEDULE_OK = False
 
 
-CONFIG_FILE = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "schedule.json"
+CONFIG_FILE = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "schedule.json"
 
 DEFAULT_CONFIG = {
     "enabled": False,
@@ -114,20 +114,20 @@ class SchedulerManager:
         self._stop_event.set()
         self._running = False
         if SCHEDULE_OK:
-            schedule.clear("procleaner")
+            schedule.clear("pcpolish")
 
     def _setup_schedule(self):
         if not SCHEDULE_OK:
             return
-        schedule.clear("procleaner")
+        schedule.clear("pcpolish")
         freq = self.config.get("frequency", "weekly")
         t_str = self.config.get("time_of_day", "02:00")
 
         if freq == "daily":
-            schedule.every().day.at(t_str).do(self._execute).tag("procleaner")
+            schedule.every().day.at(t_str).do(self._execute).tag("pcpolish")
         elif freq == "weekly":
             day = self.config.get("day_of_week", "Monday").lower()
-            getattr(schedule.every(), day).at(t_str).do(self._execute).tag("procleaner")
+            getattr(schedule.every(), day).at(t_str).do(self._execute).tag("pcpolish")
 
     def _run_loop(self):
         while not self._stop_event.is_set():
