@@ -1,5 +1,5 @@
 """
-Turbo Desk licensing module.
+PCPolish licensing module.
 
 Responsibilities:
   * Machine fingerprint (deviceId) for activation binding
@@ -9,7 +9,7 @@ Responsibilities:
   * 3-day offline grace period after a successful online check
 
 Design notes:
-  * State file lives in %APPDATA%/TurboDesk/license.json
+  * State file lives in %APPDATA%/PCPolish/license.json
   * Every write is HMAC-signed so a user editing the file to extend their
     trial invalidates the signature — the app treats it as tampered and
     forces re-activation (or trial-expired if there was no license)
@@ -50,7 +50,7 @@ OFFLINE_GRACE_DAYS = 3
 # giving up and falling back to the offline grace period.
 VALIDATION_TIMEOUT_SECONDS = 45
 
-STATE_DIR = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "TurboDesk")
+STATE_DIR = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "PCPolish")
 STATE_FILE = os.path.join(STATE_DIR, "license.json")
 
 
@@ -338,7 +338,7 @@ def _licensed_status(state: LicenseState) -> LicenseStatus:
                 return LicenseStatus(
                     allowed=True,
                     mode="licensed",
-                    message=f"Offline mode. Reconnect within {days_left} day{'s' if days_left != 1 else ''} to keep using Turbo Desk.",
+                    message=f"Offline mode. Reconnect within {days_left} day{'s' if days_left != 1 else ''} to keep using PCPolish.",
                     email=state.email,
                 )
 
