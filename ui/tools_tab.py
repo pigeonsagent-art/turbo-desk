@@ -1027,7 +1027,7 @@ class RestoreTab(QWidget):
 
     def _create(self):
         self.status.setText("  Creating restore point…"); self.prog.setRange(0, 0)
-        ok = self.manager.create("ProCleaner - Manual Restore Point")
+        ok = self.manager.create("PCPolish - Manual Restore Point")
         self.prog.setRange(0, 100); self.prog.setValue(100)
         self.status.setText("  ✓ Restore point created." if ok else "  Failed to create restore point.")
         if ok: self._load()
