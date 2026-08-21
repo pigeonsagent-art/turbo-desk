@@ -15,7 +15,7 @@ from PyQt6.QtGui import QFont
 
 from core.monitor import RealTimeMonitor
 
-SETTINGS_FILE = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "settings.json"
+SETTINGS_FILE = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "settings.json"
 
 DEFAULTS = {
     "monitor_enabled": True,
@@ -58,7 +58,7 @@ class SettingsTab(QWidget):
         col = QVBoxLayout()
         t = QLabel("Settings"); t.setFont(QFont("Segoe UI", 18, QFont.Weight.Bold))
         t.setStyleSheet("color:white;")
-        s = QLabel("Configure ProCleaner preferences and monitoring options")
+        s = QLabel("Configure PCPolish preferences and monitoring options")
         s.setStyleSheet("color:#6c7280; font-size:12px;")
         col.addWidget(t); col.addWidget(s)
         hl.addLayout(col, 1)
@@ -113,7 +113,7 @@ class SettingsTab(QWidget):
         # ── Data ──
         data_group = QGroupBox("Data & Privacy")
         dgl = QVBoxLayout(data_group)
-        btn_clear_history = QPushButton("  🗑  Clear ProCleaner History")
+        btn_clear_history = QPushButton("  🗑  Clear PCPolish History")
         btn_clear_history.clicked.connect(self._clear_history)
         btn_reset = QPushButton("  ↺  Reset All Settings to Defaults")
         btn_reset.clicked.connect(self._reset)
@@ -127,15 +127,15 @@ class SettingsTab(QWidget):
         bl.addWidget(btn_save)
 
         # ── About ──
-        about_group = QGroupBox("About ProCleaner")
+        about_group = QGroupBox("About PCPolish")
         agl = QVBoxLayout(about_group)
         for line in [
             "Version: 1.0.0",
-            "License: Free & Open Source (MIT)",
+            "License: Commercial — lifetime, up to 3 devices",
             "Platform: Windows 10 / 11",
             "Built with: Python 3 + PyQt6",
             "",
-            "ProCleaner is a free alternative to CCleaner Pro.",
+            "A fast, ad-free PC cleaner for Windows.",
             "All cleaning is done locally — no data is sent anywhere.",
         ]:
             lbl = QLabel(line)
@@ -183,7 +183,7 @@ class SettingsTab(QWidget):
         self.status_lbl.setText("  ✓  Settings saved.")
 
     def _clear_history(self):
-        state_file = Path(os.environ.get("APPDATA", "")) / "ProCleaner" / "health_state.json"
+        state_file = Path(os.environ.get("APPDATA", "")) / "PCPolish" / "health_state.json"
         try:
             state_file.unlink(missing_ok=True)
             self.status_lbl.setText("  History cleared.")
@@ -193,7 +193,7 @@ class SettingsTab(QWidget):
     def _reset(self):
         self.settings = DEFAULTS.copy()
         self._save_to_disk()
-        self.status_lbl.setText("  Settings reset to defaults. Restart ProCleaner to apply.")
+        self.status_lbl.setText("  Settings reset to defaults. Restart PCPolish to apply.")
 
     def _on_monitor_alert(self, source: str, mb: float):
         self.status_lbl.setText(f"  ⚠  Junk accumulating in {source}: {mb:.1f} MB — consider running a clean.")
