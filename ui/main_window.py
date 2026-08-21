@@ -69,7 +69,7 @@ class MiniBar(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("ProCleaner  —  System Optimizer")
+        self.setWindowTitle("PCPolish  —  System Optimizer")
         self.setMinimumSize(1140, 720)
         self.resize(1340, 820)
         self.setStyleSheet(DARK_STYLESHEET)
@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
         root.addWidget(self._build_content(), 1)
 
         self.status_bar = QStatusBar()
-        self.status_bar.showMessage("ProCleaner  •  Ready")
+        self.status_bar.showMessage("PCPolish  •  Ready")
         self.setStatusBar(self.status_bar)
 
     def _build_sidebar(self) -> QWidget:
@@ -128,7 +128,7 @@ class MainWindow(QMainWindow):
         shield = QLabel("🛡")
         shield.setFont(QFont("Segoe UI Emoji", 16))
         shield.setStyleSheet("color:#388bfd;")
-        name_lbl = QLabel("ProCleaner")
+        name_lbl = QLabel("PCPolish")
         name_lbl.setObjectName("AppName")
         name_lbl.setFont(QFont("Segoe UI", 17, QFont.Weight.Bold))
         name_row.addWidget(shield)
@@ -256,7 +256,7 @@ class MainWindow(QMainWindow):
             self._cpu_bar.setValue(cpu)
             self._ram_bar.setValue(ram)
             self.status_bar.showMessage(
-                f"ProCleaner  •  CPU {cpu}%  •  RAM {ram}%  •  Ready"
+                f"PCPolish  •  CPU {cpu}%  •  RAM {ram}%  •  Ready"
             )
         except Exception:
             pass
