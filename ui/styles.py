@@ -1,5 +1,5 @@
 """
-ProCleaner — AAA Professional Dark Theme
+PCPolish — AAA Professional Dark Theme
 Color palette inspired by modern security/system tools (Malwarebytes, GitHub dark, Windows 11)
 """
 
