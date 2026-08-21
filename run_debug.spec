@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['main.py'],
-    pathex=['C:\\ProCleaner'],
+    pathex=['C:\\PCPolish'],
     binaries=[],
     datas=[],
     hiddenimports=['PyQt6', 'PyQt6.QtWidgets', 'PyQt6.QtCore', 'PyQt6.QtGui', 'psutil', 'winreg'],
