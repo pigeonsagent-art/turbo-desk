@@ -372,7 +372,7 @@ class HealthTab(QWidget):
         self._grade_lbl.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
         self._grade_lbl.setStyleSheet(f"color:{TEXT_PRIMARY};")
 
-        self._sub_lbl = QLabel("ProCleaner will scan 10 metrics and give you an overall health score.")
+        self._sub_lbl = QLabel("PCPolish will scan 10 metrics and give you an overall health score.")
         self._sub_lbl.setStyleSheet(f"color:{TEXT_SECONDARY}; font-size:12px;")
         self._sub_lbl.setWordWrap(True)
 
