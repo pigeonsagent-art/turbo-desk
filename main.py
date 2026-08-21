@@ -1,5 +1,5 @@
 """
-ProCleaner - Free & Open Source System Optimizer
+PCPolish - Windows System Optimizer
 Entry point: silences stdout/stderr for windowed builds, then launches the Qt GUI.
 """
 import sys
@@ -10,9 +10,9 @@ import ctypes
 # Redirect them to a log file so early print() calls don't crash the process.
 def _redirect_streams():
     if sys.stdout is None or sys.stderr is None:
-        log_dir = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "ProCleaner")
+        log_dir = os.path.join(os.environ.get("APPDATA", os.path.expanduser("~")), "PCPolish")
         os.makedirs(log_dir, exist_ok=True)
-        log_path = os.path.join(log_dir, "procleaner.log")
+        log_path = os.path.join(log_dir, "PCPolish.log")
         try:
             log_file = open(log_path, "a", encoding="utf-8")
             if sys.stdout is None:
@@ -48,13 +48,13 @@ def main():
         from PyQt6.QtGui import QFont
     except Exception as e:
         # Last-resort error dialog using Windows MessageBox (no Qt needed)
-        ctypes.windll.user32.MessageBoxW(0, f"Failed to load PyQt6:\n\n{e}", "ProCleaner Error", 0x10)
+        ctypes.windll.user32.MessageBoxW(0, f"Failed to load PyQt6:\n\n{e}", "PCPolish Error", 0x10)
         sys.exit(1)
 
     app = QApplication(sys.argv)
-    app.setApplicationName("ProCleaner")
+    app.setApplicationName("PCPolish")
     app.setApplicationVersion("1.0.0")
-    app.setOrganizationName("ProCleaner")
+    app.setOrganizationName("PCPolish")
     app.setFont(QFont("Segoe UI", 10))
 
     # ── License gate ─────────────────────────────────────────────────────
