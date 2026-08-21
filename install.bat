@@ -1,8 +1,8 @@
 @echo off
-title ProCleaner - Installing Dependencies
+title PCPolish - Installing Dependencies
 echo.
 echo  ================================================
-echo    ProCleaner - Installing Dependencies
+echo    PCPolish - Installing Dependencies
 echo  ================================================
 echo.
 
@@ -25,7 +25,7 @@ echo.
 if %errorlevel% equ 0 (
     echo  ================================================
     echo    Installation complete!
-    echo    Run ProCleaner.bat to start the application.
+    echo    Run PCPolish.bat to start the application.
     echo  ================================================
 ) else (
     echo  [ERROR] Some packages failed to install.
