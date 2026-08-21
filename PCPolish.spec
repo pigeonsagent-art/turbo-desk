@@ -1,6 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""
-PyInstaller spec for ProCleaner.
+PyInstaller spec for PCPolish.
 Produces a single-folder dist with run.exe as the launcher.
 """
 
@@ -11,7 +10,7 @@ block_cipher = None
 
 a = Analysis(
     ['main.py'],
-    pathex=['C:\\ProCleaner'],
+    pathex=['C:\\PCPolish'],
     binaries=[],
     datas=[
         # Include all Python source packages so imports work at runtime
@@ -98,5 +97,5 @@ coll = COLLECT(
     strip=False,
     upx=False,
     upx_exclude=[],
-    name='ProCleaner',
+    name='PCPolish',
 )
