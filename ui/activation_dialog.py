@@ -50,11 +50,11 @@ class ActivationDialog(QDialog):
     Rejected otherwise (user cancelled / closed the window).
     """
 
-    PURCHASE_URL = "https://turbodesk.app"
+    PURCHASE_URL = "https://pcpolish.com"
 
     def __init__(self, reason: str = "", parent: QWidget | None = None):
         super().__init__(parent)
-        self.setWindowTitle("Turbo Desk — Activation")
+        self.setWindowTitle("PCPolish — Activation")
         self.setModal(True)
         self.setMinimumWidth(460)
         self._worker: _ActivationWorker | None = None
@@ -66,7 +66,7 @@ class ActivationDialog(QDialog):
         layout.setSpacing(12)
 
         # Heading
-        heading = QLabel("Activate Turbo Desk")
+        heading = QLabel("Activate PCPolish")
         font = heading.font()
         font.setPointSize(14)
         font.setBold(True)
