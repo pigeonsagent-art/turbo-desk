@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+"""
 PyInstaller spec for PCPolish.
 Produces a single-folder dist with run.exe as the launcher.
 """
